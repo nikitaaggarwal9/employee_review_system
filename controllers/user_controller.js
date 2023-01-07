@@ -97,7 +97,7 @@ module.exports.register = function(req, res){
 module.exports.home = async function(req, res){
 
     try {
-        // if user is not looged in then send back yo login
+        // if user is not looged in then send back to login
         if(!req.isAuthenticated()){
             console.log("not logged in");
             return res.redirect('/users/login');
