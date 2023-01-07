@@ -36,17 +36,14 @@ module.exports.adminPage = async function(req, res){
 // set review for employee
 module.exports.setReviewrs = async function(req, res){
     try{
-        if(!req.isAuthenticated()){
+        if (!req.isAuthenticated()) {
             return res.redirect('/users/login');
-        }else{
+        } else {
             let employee = await User.findById(req.user.id);
 
-            if(employee.isAdmin == false){
-                console.log("You are not an admin");
-                return res.redirect('/');
-            }else if(req.body.Reviewer == req.body.Recipient){
+            if (req.body.Reviewer == req.body.Recipient) {
                 return res.redirect('back');
-            }else{
+            } else {
                 let reviewer = await User.findById(req.body.Reviewer);
                 
                 // if reviewer not found
@@ -60,11 +57,13 @@ module.exports.setReviewrs = async function(req, res){
                     return res.redirect('back');
                 }
 
-                reviewer.to.push(recipient);
-                reviewer.save();
-
-                recipient.from.push(reviewer);
-                recipient.save();
+                if(!reviewer.to.includes(recipient)) {
+                    reviewer.to.push(recipient);
+                    reviewer.save();
+    
+                    recipient.from.push(reviewer);
+                    recipient.save();
+                }
 
                 return res.redirect('back');
             }

@@ -101,7 +101,8 @@ module.exports.home = async function(req, res){
 
         for(let i = 0; i < user.to.length; i++){
             let x = await User.findById(user.to[i]);
-            recipients.push(x);
+            
+            if(!recipients.includes(x)) recipients.push(x);
         }
 
         // find reviews
