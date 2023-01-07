@@ -1,6 +1,7 @@
 const express = require('express');
 const port = 8000;
 const app = express();
+const dotenv = require('dotenv').config();
 
 const expressLayouts = require('express-ejs-layouts');
 
