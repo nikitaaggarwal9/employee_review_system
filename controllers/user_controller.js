@@ -23,11 +23,7 @@ module.exports.createUser = async function(req, res){
                 isAdmin : false,
                 password : req.body.password
             });
-            console.log('User created successfully');
-            if(req.user.isAdmin){
-                return res.redirect('/');
-            }
-            return res.redirect('/users/login');
+            return res.redirect('/');
         }
     
     } catch (error) {
@@ -49,7 +45,6 @@ module.exports.createSession = function(req, res){
 module.exports.destroySession = function(req, res){
     req.logout(function(err){
         if(err){
-            console.log("error while log out :",err);
             return;
         }
         return res.redirect('/users/login');
@@ -62,12 +57,10 @@ module.exports.destroySession = function(req, res){
 module.exports.login = function(req, res){
     // if user is authenticated then not able to open login panel
     if(req.isAuthenticated()){
-        return res.render('home', {
-            title : "ERS | Home"
-        });
+        return res.redirect('/');
     }
     return res.render('user_sign_in', {
-        title : "ERS | Login"
+        title : "Login"
     });
 }
 
@@ -77,18 +70,16 @@ module.exports.register = function(req, res){
     // if user is authenticate then not able to register self;
     if(req.isAuthenticated() && req.user.isAdmin){
         return res.render('user_sign_up', {
-            title : "ERS | Register"
+            title : "Register"
         });
     }
 
     if(req.isAuthenticated()){
-        return res.render('home', {
-            title : "ERS | Home"
-        });
+        return res.redirect('/');
     }
     
     return res.render('user_sign_up', {
-        title : "ERS | Register"
+        title : "Register"
     });
     
 }
@@ -99,7 +90,6 @@ module.exports.home = async function(req, res){
     try {
         // if user is not looged in then send back to login
         if(!req.isAuthenticated()){
-            console.log("not logged in");
             return res.redirect('/users/login');
         }
 
@@ -130,7 +120,7 @@ module.exports.home = async function(req, res){
         }
 
         return res.render('home', {
-            title : "Home Page",
+            title : "Home",
             recipients: recipients,
             reviews: reviews,
             user : user,
